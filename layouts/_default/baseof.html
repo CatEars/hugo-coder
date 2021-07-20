@@ -33,7 +33,7 @@
     {{ else }}
       {{ $cssOpts := (dict "targetPath" "css/coder.css" ) }}
       {{ $styles := resources.Get "scss/coder.scss" | resources.ExecuteAsTemplate "style.coder.css" . | toCSS $cssOpts | minify | fingerprint }}
-      <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="{{ $styles.RelPermalink }}" crossorigin="anonymous" media="screen" />
     {{ end }}
 
     {{ if .Site.Params.rtl }}
@@ -44,19 +44,7 @@
       {{ else }}
         {{ $cssOpts := (dict "targetPath" "css/coder-rtl.css" ) }}
         {{ $styles := resources.Get "scss/coder-rtl.scss" | resources.ExecuteAsTemplate "style.coder-rtl.css" . | toCSS $cssOpts | minify | fingerprint }}
-        <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" crossorigin="anonymous" media="screen" />
-      {{ end }}
-    {{ end }}
-
-    {{ if  or (eq .Site.Params.colorScheme "auto") (eq .Site.Params.colorScheme "dark") }}
-      {{ if .Site.IsServer }}
-        {{ $cssOpts := (dict "targetPath" "css/coder-dark.css" "enableSourceMap" true ) }}
-        {{ $styles := resources.Get "scss/coder-dark.scss" | resources.ExecuteAsTemplate "style.coder-dark.css" . | toCSS $cssOpts }}
-        <link rel="stylesheet" href="{{ $styles.RelPermalink }}" media="screen">
-      {{ else }}
-        {{ $cssOpts := (dict "targetPath" "css/coder-dark.css" ) }}
-        {{ $styles := resources.Get "scss/coder-dark.scss" | resources.ExecuteAsTemplate "style.coder-dark.css" . | toCSS $cssOpts | minify | fingerprint }}
-        <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" crossorigin="anonymous" media="screen" />
+        <link rel="stylesheet" href="{{ $styles.RelPermalink }}" crossorigin="anonymous" media="screen" />
       {{ end }}
     {{ end }}
 
@@ -95,11 +83,6 @@
   </head>
 
   {{ $csClass := "colorscheme-light" }}
-  {{ if eq .Site.Params.colorScheme "dark" }}
-    {{ $csClass = "colorscheme-dark" }}
-  {{ else if eq .Site.Params.colorScheme "auto" }}
-    {{ $csClass = "colorscheme-auto" }}
-  {{ end }}
   <body class="preload-transitions {{ $csClass }}{{ if .Site.Params.rtl }} rtl{{ end }}"
         onload="{{ if .Site.Params.enableTwemoji }} twemoji.parse(document.body); {{ end }}"
   >
