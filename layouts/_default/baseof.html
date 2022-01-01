@@ -64,6 +64,12 @@
       {{ end }}
     {{ end }}
 
+    {{ range .Site.Params.customJS }}
+      {{ $jsContent := resources.Get .  }}
+      {{ $integrity := $jsContent | fingerprint }}
+      <script language="javascript" type="text/javascript" src="{{ $jsContent.RelPermalink }}" integrity="{{ $integrity.Data.Integrity }}"></script>
+    {{ end }}
+
     <link rel="icon" type="image/png" href="{{ .Site.Params.favicon_32 | default "/images/favicon-32x32.png" | relURL }}" sizes="32x32">
     <link rel="icon" type="image/png" href="{{ .Site.Params.favicon_16 | default "/images/favicon-16x16.png" | relURL }}" sizes="16x16">
 
@@ -103,10 +109,6 @@
     {{ else }}
       {{ $script := resources.Get "js/coder.js" | minify | fingerprint }}
       <script src="{{ $script.RelPermalink }}" integrity="{{ $script.Data.Integrity }}"></script>
-    {{ end }}
-
-    {{ range .Site.Params.customJS }}
-      <script src="{{ . | relURL }}"></script>
     {{ end }}
 
     {{ template "_internal/google_analytics.html" . }}
